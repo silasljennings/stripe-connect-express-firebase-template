@@ -1,5 +1,4 @@
 'use strict';
-
 const config = require('./config');
 const express = require('express');
 const session = require('cookie-session');
@@ -9,27 +8,14 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const flash = require('express-flash');
 const bodyParser = require('body-parser');
-const moment = require('moment');
+const admin = require('firebase-admin');
+const serviceAccount = config.getServiceAccount(process.env.ENV);
+
+// Initialize firebase
+admin.initializeApp(serviceAccount);
 
 const app = express();
 app.set('trust proxy', true);
-
-// MongoDB configuration
-const mongoose = require('mongoose');
-const connectRetry = function() {
-  mongoose.connect(config.mongoUri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
-    poolSize: 500,
-  }, (err) => {
-    if (err) {
-      console.log('Mongoose connection error:', err);
-      setTimeout(connectRetry, 5000);
-    }
-  });
-}
-connectRetry();
 
 // Set up the view engine
 app.set('view engine', 'pug');
@@ -45,6 +31,7 @@ app.use(
     resave: true,
   })
 );
+
 // Set up flash messages
 app.use(flash());
 
@@ -58,25 +45,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Middleware that exposes the pilot object (if any) to views
-app.use((req, res, next) => {
-  if (req.user) {
-    res.locals.pilot = req.user;
-  }
-  next();
-});
-app.locals.moment = moment;
-
-// CRUD routes for the pilot signup and dashboard
-app.use('/pilots', require('./routes/pilots/pilots'));
-app.use('/pilots/stripe', require('./routes/pilots/stripe'));
-
-// API routes for rides and passengers used by the mobile app
+// routes for vendor signup
+app.use('/vendors', require('./routes/vendor'));
+app.use('/vendors/stripe', require('./routes/stripe'));
 app.use('/api/settings', require('./routes/api/settings'));
-app.use('/api/rides', require('./routes/api/rides'));
-app.use('/api/passengers', require('./routes/api/passengers'));
 
-// Index page for Rocket Rides
+
+// Index page
 app.get('/', (req, res) => {
   res.render('index');
 });
@@ -113,6 +88,6 @@ app.use((err, req, res) => {
 });
 
 // Start the server on the correct port
-const server = app.listen(process.env.PORT || config.port, () => {
-  console.log('🚀 Rocket Rides server started:', config.publicDomain);
+const server = app.listen(config.port, () => {
+  console.log('Vendor console server started:', config.publicDomain);
 });

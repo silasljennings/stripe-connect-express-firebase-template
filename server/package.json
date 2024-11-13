@@ -1,5 +1,5 @@
 {
-  "name": "stripe-connect-rocketrides",
+  "name": "stripe-connect-vendor-console",
   "description": "A sample on-demand platform running on top of Stripe Connect.",
   "version": "0.0.1",
   "private": true,
@@ -23,8 +23,8 @@
     "debug": "^4.1.1",
     "express": "^4.17.1",
     "express-flash": "0.0.2",
+    "firebase-admin": "^12.7.0",
     "moment": "^2.29.2",
-    "mongoose": "^5.11.9",
     "morgan": "^1.9.1",
     "passport": "^0.5.0",
     "passport-local": "^1.0.0",

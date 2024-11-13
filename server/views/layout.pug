@@ -3,32 +3,20 @@ html
   head
     meta(charset='utf-8')
     meta(name='viewport', content='width=device-width, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no')
-    meta(name='twitter:card', content='summary')
-    meta(name='twitter:site', content='@stripe')
-    meta(name='twitter:title', content='Rocket Rides')
-    meta(name='twitter:description', content='Rocket Rides is an on-demand platform built on top of Stripe Connect.')
-    meta(name='twitter:image', content='https://rocketrides.io/images/rocketrides.png')
-    title Rocket Rides
-    link(rel='stylesheet', type='text/css', href='/stylesheets/rocketrides.css')
+    title Cashboard Vendor Console
+    link(rel='stylesheet', type='text/css', href='/stylesheets/vendor-console-signup.css')
     link(rel='stylesheet', href='https://fonts.googleapis.com/css?family=Barlow:500,600')
-    link(rel='icon', type='image/png', sizes='64x64', href='/images/favicon.png')
+    link(rel='icon', type='image/png', sizes='64x64', href='/images/logo-transparent-background.png')
 
   body
     header
       #top
-        if pilot
-          .logo
-            a.rocketrides.mark(href='/')
-          .links
-            if pilot.stripeAccountId && pilot.onboardingComplete
-              a(href='/pilots/dashboard') Dashboard
-            a(href='/pilots/logout') Log out
-        else
-          .logo
-            a.rocketrides(href='/')
-          .links
-            a(href='/pilots/login') Log in
+        .logo
+          a.cashboard(href='/')
+        .links
+          a(href='/vendors/login') Log in
       block header
+
 
     #content
       block content
@@ -36,4 +24,4 @@ html
     footer
       block footer
 
-    script(src='/javascripts/rocketrides.js')
+    script(src='/javascripts/vendor-console-signup.js')
